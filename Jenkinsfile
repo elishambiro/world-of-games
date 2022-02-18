@@ -8,28 +8,28 @@ pipeline {
       }
       stage('Build'){ 
           steps {
-              dir("WoG/") {
+              dir("world-of-games/") {
                     bat "docker build -t elishambiro/project:v0.1 ."
               } 
           }
       }
       stage('Run'){
           steps {
-                    dir("WoG/") {
+                    dir("world-of-games/") {
                         bat "docker-compose up"
                     }
           }
       }
       stage('Test'){
           steps {
-                    dir("WoG/") {
+                    dir("world-of-games/") {
                         bat 'python3 /tests/e2e.py'
                     }
           }
       }
       stage('Finalize'){
           steps {
-                     dir("WoG/") {
+                     dir("world-of-games/") {
                          bat "docker-compose down"
                      }
           }
