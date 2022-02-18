@@ -18,3 +18,4 @@ pipeline {
       echo 'done'
     }
 }
+}
