@@ -9,7 +9,7 @@ pipeline {
       stage('Build'){ 
           steps {
               dir("/") {
-                    sh "docker build . -f Dockerfile"
+                    sh "docker build -t elishambiro/project:v0.1 ."
               } 
           }
       }
