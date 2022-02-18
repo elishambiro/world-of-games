@@ -3,9 +3,7 @@ pipeline {
     stages {
       stage('Checkout') {
           steps {
-                parallel(
-                    checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/elishambiro/world-of-games.git']]])
-                )
+              checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/elishambiro/world-of-games.git']]])
           }
       }
       stage('Build'){ 
