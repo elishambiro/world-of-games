@@ -9,7 +9,7 @@ pipeline {
       stage('Build'){ 
           steps {
               dir("/") {
-                    bat "docker build -t elishambiro/project:v0.1 -f ./Dockerfile"
+                    bat "docker build . -f Dockerfile"
               } 
           }
       }
