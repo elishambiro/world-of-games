@@ -1,0 +1,6 @@
+version: '2'
+services:
+    web:
+        image: elishambiro/project:v0.1
+        ports:
+            - "5000:5000"

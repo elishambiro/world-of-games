@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scores</title>
+		<style>
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: linear-gradient(45deg, #49a09d, #5f2c82);
+  font-family: sans-serif;
+  font-weight: 100;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+table {
+  width: 800px;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+th,
+td {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+th {
+  text-align: left;
+}
+thead tr {
+  background: linear-gradient(45deg, #5f2c82, #49a09d);
+}
+
+thead th {
+  background-color: #55608f;
+}
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+tbody td {
+  position: relative;
+}
+tbody td:hover:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: -1;
+}
+}		</style>
+		<script>
+		function get_scores(){
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.open( "GET", "/get_scores", false ); // false for synchronous request
+			xmlHttp.setRequestHeader("Content-Type", "application/json");
+			xmlHttp.send( null );
+			console.log(xmlHttp.responseText)
+			var result = xmlHttp.responseText
+			return result
+		}
+		
+	
+		function see_results(result){	
+			var results = JSON.parse(result)
+			console.log(results.data[0].name)
+			var head_tr = document.createElement("tr");
+			var name_td = document.createElement("td");
+			name_td.innerHTML = "Name";
+			head_tr.appendChild(name_td);
+			var score_td = document.createElement("td");
+			score_td.innerHTML = "Score";
+			head_tr.appendChild(score_td);
+			var tab = document.getElementById("thead")
+			tab.appendChild(head_tr)
+			for(var i = 0; i < results.data.length; i++){
+				var head_tr = document.createElement("tr");
+				var name_td = document.createElement("td");
+				name_td.innerHTML = results.data[i].name;
+				head_tr.appendChild(name_td);
+				var score_td = document.createElement("td");
+				score_td.innerHTML = results.data[i].score;
+				head_tr.appendChild(score_td);
+				document.getElementById("tbody").appendChild(head_tr)
+
+			}
+		
+		
+		
+		}
+		
+		
+		function start(){
+		document.getElementById("tbody").innerHTML = "";
+		document.getElementById("thead").innerHTML = "";
+		var result = get_scores()
+		setTimeout(see_results(result), 2000)
+		}
+
+		function checkInput() {
+        var query = document.getElementById('search').value;
+        window.find(query);
+        return true;
+    	}
+		</script>
+		
+	</head>
+	<body onload="start();">
+	<h1></h1>
+	<br>
+	<div class="search_box">
+    <form action="" id="form2">
+        <div align="center" >
+			<button type="button" onclick="start();">Refresh</button>
+			<br><br>
+			<input type="text" id="search" placeholder="Search your nickname...">
+            <input type="button" id="submit_form" onclick="checkInput()" value="Submit">
+
+        </div>
+    </form>
+	</div>
+
+
+	<div class="container">
+		<table id="table">
+		<thead id="thead"></thead>
+		<tbody id="tbody"></tbody>
+		
+			
+		</table>
+		</div>
+	</body>
+</html>
