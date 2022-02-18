@@ -18,21 +18,28 @@ pipeline {
       stage('Run'){
           steps {
                 parallel(
-                   useCustomDockerComposeFile true
+                    dir("WoG/") {
+                        
+                        bat "docker-compose up"
+                    }
                 )
           }
       }
       stage('Test'){
           steps {
                 parallel(
-                    sh 'python3 /tests/e2e.py'
+                    dir("WoG/") {
+                        bat 'python3 /tests/e2e.py'
+                    }
                 )
           }
       }
       stage('Finalize'){
           steps {
                 parallel(
-                    useCustomDockerComposeFile false
+                     dir("WoG/") {
+                         bat "docker-compose down"
+                     }
                 )
           }
       }
