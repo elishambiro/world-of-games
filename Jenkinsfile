@@ -11,7 +11,7 @@ pipeline {
       stage('Build'){ 
           steps {
                 parallel(
-                    bat'docker build -t elishambiro/project:v0.1 .'
+                    agent { dockerfile true }
                     echo 'build!'
                 )
           }
