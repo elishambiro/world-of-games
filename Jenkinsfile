@@ -12,29 +12,27 @@ pipeline {
           steps {
                 parallel(
                     agent { dockerfile true }
-                    echo 'build!'
                 )
           }
       }
       stage('Run'){
           steps {
                 parallel(
-                    bat 'docker-compose up'
+                   useCustomDockerComposeFile true
                 )
           }
       }
       stage('Test'){
           steps {
                 parallel(
-                    bat 'python3 /tests/e2e.py'
+                    sh 'python3 /tests/e2e.py'
                 )
           }
       }
       stage('Finalize'){
           steps {
                 parallel(
-                    bat 'docker-compose down'
-                    echo 'done'
+                    useCustomDockerComposeFile false
                 )
           }
       }
