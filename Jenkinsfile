@@ -10,37 +10,30 @@ pipeline {
       }
       stage('Build'){ 
           steps {
-                parallel(
-                    agent { dockerfile true }
-                )
+              dir("WoG/") {
+                    bat "docker build -t elishambiro/project:v0.1"
+              } 
           }
       }
       stage('Run'){
           steps {
-                parallel(
                     dir("WoG/") {
-                        
                         bat "docker-compose up"
                     }
-                )
           }
       }
       stage('Test'){
           steps {
-                parallel(
                     dir("WoG/") {
                         bat 'python3 /tests/e2e.py'
                     }
-                )
           }
       }
       stage('Finalize'){
           steps {
-                parallel(
                      dir("WoG/") {
                          bat "docker-compose down"
                      }
-                )
           }
       }
     }
