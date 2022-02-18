@@ -4,7 +4,7 @@ pipeline {
       stage('Checkout') {
           steps {
                 parallel(
-                    git 'https://github.com/elishambiro/world-of-games.git'
+                    checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/elishambiro/world-of-games.git']]])
                 )
           }
       }
