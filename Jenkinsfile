@@ -9,28 +9,28 @@ pipeline {
       stage('Build'){ 
           steps {
               dir("/") {
-                    bat "docker build . -f Dockerfile"
+                    sh "docker build . -f Dockerfile"
               } 
           }
       }
       stage('Run'){
           steps {
                     dir("/") {
-                        bat "docker-compose up"
+                        sh "docker-compose up"
                     }
           }
       }
       stage('Test'){
           steps {
                     dir("/") {
-                        bat 'python3 /tests/e2e.py'
+                        sh 'python3 /tests/e2e.py'
                     }
           }
       }
       stage('Finalize'){
           steps {
                      dir("/") {
-                         bat "docker-compose down"
+                         sh "docker-compose down"
                      }
           }
       }
