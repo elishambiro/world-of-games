@@ -1,6 +1,6 @@
 opal 75
 eli 44
 sergey 38
-Inbal 35
-Dor 33
-ADAM 22
+inbal 35
+dor 33
+adam 22
