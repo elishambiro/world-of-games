@@ -26,6 +26,7 @@ pipeline {
                   sh ' docker attach world-of-games-web-1'
                   sh 'cd tests/'
                   sh 'python3 e2e.py'
+                  sh 'exit'
                }
           }
       }
