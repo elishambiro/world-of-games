@@ -21,12 +21,19 @@ pipeline {
           }
       }
       stage('Test'){
-          steps {
-                    dir("/var/lib/jenkins/workspace/world-of-games/") {
-                        sh 'docker exec --tty world-of-games-web-1 bash'
-                        sh 'pwd'
-                    }
-          }
+              agent {
+                docker {
+                    image 'elishambiro/project:v0.1'
+            }
+      } 
+        stages {
+        stage('main') {
+            steps {
+                sh '''python --version'''
+            }
+            
+        }
+         
       }
       stage('Finalize'){
           steps {
