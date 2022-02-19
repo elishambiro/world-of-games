@@ -9,7 +9,7 @@ pipeline {
       stage('Build'){ 
           steps {
               dir("/var/lib/jenkins/workspace/world-of-games/") {
-                    sh "docker build - < Dockerfile"
+                    sh "docker build -t elishambiro/project:v0.1 ."
               } 
           }
       }
