@@ -14,10 +14,15 @@ pipeline {
           }
       }
       stage('Run'){
-          steps {
-                    dir("/var/lib/jenkins/workspace/world-of-games/") {
-                        sh "docker-compose up -d"
-                    }
+          docker { image 'elishambiro/project:v0.1' }
+          stages {
+              stage('Test') {
+                  steps {
+                      sh 'node --version'
+                  }
+              }
+                       
+                    
           }
       }
       stage('Test'){
