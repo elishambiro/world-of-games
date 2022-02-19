@@ -16,7 +16,7 @@ pipeline {
       stage('Run'){
           steps {
                     dir("/var/lib/jenkins/workspace/world-of-games/") {
-                        sh "docker-compose up"
+                        sh "docker-compose up -d"
                     }
           }
       }
