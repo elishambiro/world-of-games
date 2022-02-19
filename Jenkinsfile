@@ -8,28 +8,28 @@ pipeline {
       }
       stage('Build'){ 
           steps {
-              dir("/") {
+              dir("/var/lib/jenkins/workspace/world-of-games/") {
                     sh "docker build - < Dockerfile"
               } 
           }
       }
       stage('Run'){
           steps {
-                    dir("/") {
+                    dir("/var/lib/jenkins/workspace/world-of-games/") {
                         sh "docker-compose up"
                     }
           }
       }
       stage('Test'){
           steps {
-                    dir("/") {
+                    dir("/var/lib/jenkins/workspace/world-of-games/") {
                         sh 'python3 /tests/e2e.py'
                     }
           }
       }
       stage('Finalize'){
           steps {
-                     dir("/") {
+                     dir("/var/lib/jenkins/workspace/world-of-games/") {
                          sh "docker-compose down"
                      }
           }
