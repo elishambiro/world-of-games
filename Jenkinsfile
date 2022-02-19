@@ -23,7 +23,7 @@ pipeline {
       stage('Test'){
           steps {
                     dir("/var/lib/jenkins/workspace/world-of-games/") {
-                        sh 'docker exec --tty world-of-games-web-1'
+                        sh 'docker exec --tty world-of-games-web-1 bash'
                         sh 'pwd'
                     }
           }
