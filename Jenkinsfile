@@ -24,8 +24,10 @@ pipeline {
         steps {
               dir("/var/lib/jenkins/workspace/world-of-games/") {
                   sh 'docker exec -i world-of-games-web-1 sh'
-                  sh 'cd tests/'
-                  sh 'python3 e2e.py'
+                  //sh 'cd tests/'
+                  //sh 'python3 e2e.py'
+                  sh 'pwd'
+                  sh 'ls'
                   sh 'exit'
                }
           }
