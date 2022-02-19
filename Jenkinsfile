@@ -23,7 +23,7 @@ pipeline {
       stage('Test'){
           steps {
                     dir("/var/lib/jenkins/workspace/world-of-games/") {
-                        sh 'python3 /tests/e2e.py'
+                        sh 'cd tests/ && python3 e2e.py'
                     }
           }
       }
