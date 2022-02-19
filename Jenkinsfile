@@ -21,19 +21,13 @@ pipeline {
           }
       }
       stage('Test'){
-              agent {
-                docker {
-                    image 'elishambiro/project:v0.1'
-            }
-      } 
-        stages {
-        stage('main') {
-            steps {
-                sh '''python --version'''
-            }
-            
-        }
-         
+        steps {
+              dir("/var/lib/jenkins/workspace/world-of-games/") {
+                  sh ' docker attach world-of-games-web-1'
+                  sh 'cd tests/'
+                  sh 'python3 e2e.py'
+               }
+          }
       }
       stage('Finalize'){
           steps {
