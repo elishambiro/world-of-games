@@ -13,7 +13,7 @@ def test_scores_service(my_driver):
 
 
 def main_function():
-    my_driver = webdriver.Chrome(executable_path="chromedriver.exe")
+    my_driver = webdriver.Chrome()
     bool = test_scores_service(my_driver)
     if bool:
         return -1
