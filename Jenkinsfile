@@ -39,7 +39,9 @@ pipeline {
       stage('Finalize'){
           steps {
                      dir("/var/lib/jenkins/workspace/world-of-games/") {
-                         sh "docker-compose down"
+                         sh """docker-compose down
+                               docker push elishambiro/project:v0.1
+                         """
                      }
           }
       }
