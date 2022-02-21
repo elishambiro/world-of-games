@@ -40,6 +40,7 @@ pipeline {
           steps {
                      dir("/var/lib/jenkins/workspace/world-of-games/") {
                          sh """docker-compose down
+                               docker login -u elishambiro --password-stdin
                                docker push elishambiro/project:v0.1
                          """
                      }
