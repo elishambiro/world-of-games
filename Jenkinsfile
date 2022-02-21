@@ -24,7 +24,7 @@ pipeline {
         steps {
               dir("/var/lib/jenkins/workspace/world-of-games/") {
                     sh """docker exec -i world-of-games-web-1 bash
-                          sudo -i
+                          apt-get -y update
                           apt-get install -y google-chrome-stable
                           apt-get install -yqq unzip curl
                           wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
