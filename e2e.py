@@ -1,5 +1,11 @@
 from selenium import webdriver
 from time import sleep
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
 
 
 def test_scores_service(my_driver):
