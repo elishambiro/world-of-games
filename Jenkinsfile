@@ -44,7 +44,7 @@ pipeline {
                      dir("/var/lib/jenkins/workspace/world-of-games/") {
                          sh """docker-compose down
                                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                               docker push elishambiro/project:latest
+                               docker push elishambiro/project:v0.1
                                docker logout
                          """
                      }
