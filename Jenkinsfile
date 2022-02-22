@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment{
-      DOCKERHUB_CREDENTIAL$ = credential('elishambiro-dockerhub')
+      DOCKERHUB_CREDENTIALS$ = credential('elishambiro-dockerhub')
     }        
     stages {
       stage('Checkout') {
@@ -43,7 +43,7 @@ pipeline {
           steps {
                      dir("/var/lib/jenkins/workspace/world-of-games/") {
                          sh """docker-compose down
-                               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin
+                               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
                                docker push elishambiro/project:latest
                                docker logout
                          """
