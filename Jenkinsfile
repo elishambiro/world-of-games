@@ -1,5 +1,5 @@
 pipeline {
-    agent {any}
+    agent any
     enviroment{
       DOCKERHUB_CREDENTIAL$ = credential('elishambiro-dockerhub')
     }        
