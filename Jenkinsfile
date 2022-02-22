@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    enviroment{
+    environment{
       DOCKERHUB_CREDENTIAL$ = credential('elishambiro-dockerhub')
     }        
     stages {
