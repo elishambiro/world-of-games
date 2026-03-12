@@ -22,4 +22,3 @@ def load_game():
         level = input("Please choose game difficulty from 1 to 5: \n")
 
     return option, int(level)
-

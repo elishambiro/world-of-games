@@ -1,9 +1,7 @@
 from time import sleep
 from random import randint
-from tkinter import *
-import tkinter as tk
 from art import *
-from Score import *
+from score import add_score, points_of_winning, record_play
 
 
 def generate_sequence(difficulty):
@@ -11,15 +9,9 @@ def generate_sequence(difficulty):
     numbers = []
     for i in range(difficulty):
         numbers.append(randint(1, 101))
-    root = Tk()
-    root.attributes("-topmost", True)
-    root.attributes("-fullscreen", True)
-    canvas = Canvas(root)
-    canvas.create_text(750, 350, fill="black", font="Times 40 italic bold",
-                       text=", ".join([str(int) for int in numbers]))
-    canvas.pack(fill=tk.BOTH, expand=True)
-    root.after(700, root.destroy)
-    root.mainloop()
+    print("\n" + " | ".join(str(n) for n in numbers))
+    sleep(2)
+    print("\033[F\033[K", end="")  # מחיקת שורת המספרים
     return numbers
 
 
@@ -46,9 +38,11 @@ def is_list_equal(numbers, user_list, name, difficulty):
     if user_list == numbers:
         print("***YOU WIN***")
         add_score(name, points_of_winning(difficulty))
+        record_play("memory", difficulty, "win")
         sleep(1)
     else:
         print("YOU LOSE!")
+        record_play("memory", difficulty, "lose")
         sleep(1)
 
 

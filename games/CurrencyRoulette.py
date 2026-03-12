@@ -1,13 +1,13 @@
 import requests, json
 from random import randint
 from time import sleep
-from Score import *
+from score import add_score, points_of_winning, record_play
 
 
+CURRENCY_API_KEY = "32cfe8e0-62a6-11ec-b1f1-f16b3fd0271a"
 
 def get_money_interval():
-    key = "32cfe8e0-62a6-11ec-b1f1-f16b3fd0271a"
-    url = "https://freecurrencyapi.net/api/v2/latest?apikey=32cfe8e0-62a6-11ec-b1f1-f16b3fd0271a&base_currency=USD"
+    url = f"https://freecurrencyapi.net/api/v2/latest?apikey={CURRENCY_API_KEY}&base_currency=USD"
     resp = requests.get(url).text
     currency = json.loads(resp)["data"]["ILS"]
     number = randint(1, 100)
@@ -28,12 +28,14 @@ def get_guess_from_user(number):
     return guess
 
 
-def check_answer(name, difficulty, guess, answer,):
+def check_answer(name, difficulty, guess, answer):
     if (answer - (6 - difficulty)) <= guess <= (answer + (6 - difficulty)):
         print("***YOU WIN***")
         add_score(name, points_of_winning(difficulty))
+        record_play("currency", difficulty, "win")
     else:
         print("YOU LOSE!")
+        record_play("currency", difficulty, "lose")
 
 
 def check_result():
