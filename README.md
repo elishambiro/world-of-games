@@ -7,7 +7,7 @@
 [![Prometheus](https://img.shields.io/badge/Prometheus-monitored-orange?logo=prometheus)](https://prometheus.io)
 [![Grafana](https://img.shields.io/badge/Grafana-dashboard-yellow?logo=grafana)](https://grafana.com)
 
-A Python-based gaming platform with three interactive games, a live leaderboard, and full observability via Prometheus + Grafana. Deployed via Docker and automated with GitHub Actions CI/CD.
+A Python-based gaming platform with three interactive games, a live leaderboard, and full observability via Prometheus + Grafana. Playable directly in the browser via a web terminal. Deployed via Docker and automated with GitHub Actions CI/CD.
 
 ---
 
@@ -26,19 +26,23 @@ All games support **difficulty levels 1–5**. Higher difficulty = more points.
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│                  Docker Compose                  │
-│                                                 │
-│  ┌──────────┐   ┌────────────┐   ┌───────────┐  │
-│  │   Flask  │──▶│ Prometheus │──▶│  Grafana  │  │
-│  │  :5000   │   │   :9090    │   │   :3000   │  │
-│  └──────────┘   └────────────┘   └───────────┘  │
-└─────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                      Docker Compose                       │
+│                                                          │
+│  ┌──────────┐   ┌──────────┐   ┌────────────┐  ┌──────┐  │
+│  │  Flask   │   │   ttyd   │   │ Prometheus │  │Grafana│ │
+│  │  :5000   │   │  :7681   │   │   :9090    │  │:3001  │ │
+│  └──────────┘   └──────────┘   └────────────┘  └──────┘  │
+│       │               │               │                   │
+│   Web UI +        Browser         Scrapes /metrics        │
+│   /metrics        Terminal        every 15s               │
+└──────────────────────────────────────────────────────────┘
 ```
 
-- **Flask** — Scores web dashboard + `/metrics` endpoint
+- **Flask** — Web portal, leaderboard, `/metrics` endpoint
+- **ttyd** — Web terminal embedded in browser to play games interactively
 - **Prometheus** — Scrapes metrics every 15s
-- **Grafana** — Pre-provisioned dashboard (HTTP rate, latency, errors)
+- **Grafana** — Pre-provisioned dashboard (HTTP rate, latency, game plays)
 
 ---
 
@@ -57,16 +61,10 @@ docker compose up -d
 
 | Service | URL |
 |---------|-----|
-| Scores Dashboard | http://localhost:5000 |
+| Home / Leaderboard | http://localhost:5000 |
+| Play Games (browser terminal) | http://localhost:5000/game |
 | Prometheus | http://localhost:9090 |
-| Grafana | http://localhost:3000 (admin/admin) |
-
-### Play games (CLI)
-
-```bash
-pip install -r requirements.txt
-python main_game.py
-```
+| Grafana | http://localhost:3001 (admin/admin) |
 
 ---
 
@@ -75,7 +73,7 @@ python main_game.py
 The pipeline runs automatically on every push to `master`:
 
 ```
-Checkout → Build Docker image → Run container → E2E Tests → Push to Docker Hub
+Checkout → Build Docker image → Start container → Seed test data → E2E Tests (pytest) → Push to Docker Hub
 ```
 
 ### Secrets required
@@ -96,9 +94,9 @@ Prometheus scrapes `/metrics` from the Flask app every 15 seconds.
 Grafana is pre-configured with a **World of Games** dashboard showing:
 - HTTP request rate per endpoint
 - Average request duration
-- Total successful vs. error requests
+- Total game plays by game type and result
 
-Access Grafana at `http://localhost:3000` → login with `admin / admin`.
+Access Grafana at `http://localhost:3001` → login with `admin / admin`.
 
 ---
 
@@ -107,22 +105,26 @@ Access Grafana at `http://localhost:3000` → login with `admin / admin`.
 ```
 world-of-games/
 ├── .github/workflows/ci-cd.yml   # GitHub Actions pipeline
+├── games/
+│   ├── GuessGame.py               # Guess the Number game
+│   ├── MemoryGame.py              # Memory game
+│   └── CurrencyRoulette.py        # Currency conversion game
 ├── monitoring/
 │   ├── prometheus.yml             # Prometheus scrape config
 │   └── grafana/provisioning/      # Auto-provisioned datasource + dashboard
 ├── templates/
+│   ├── index.html                 # Home portal
+│   ├── game.html                  # Browser terminal page
 │   ├── score.html                 # Leaderboard UI
-│   └── scores.txt                 # Persistent scores (name score)
-├── main_game.py                   # CLI entry point
-├── GuessGame.py                   # Guess the Number game
-├── MemoryGame.py                  # Memory game
-├── CurrencyRoulette.py            # Currency conversion game
-├── ScoreMain.py                   # Flask app (scores + /metrics)
-├── Score.py                       # Score calculation & persistence
-├── live.py                        # Menu system
-├── e2e.py                         # Selenium end-to-end tests
-├── Dockerfile                     # python:3.11-slim image
-└── docker-compose.yml             # web + prometheus + grafana
+│   └── navbar.html                # Shared navigation bar
+├── tests/
+│   └── e2e.py                     # pytest end-to-end tests (API + Selenium)
+├── app.py                         # Flask app (routes + Prometheus metrics)
+├── score.py                       # SQLite score storage
+├── menu.py                        # Game menu system
+├── main.py                        # CLI entry point
+├── Dockerfile                     # python:3.11-slim + ttyd binary
+└── docker-compose.yml             # web + ttyd + prometheus + grafana
 ```
 
 ---
@@ -136,6 +138,7 @@ world-of-games/
 ![Grafana](https://img.shields.io/badge/-Grafana-F46800?logo=grafana&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/-GitHub_Actions-2088FF?logo=github-actions&logoColor=white)
 ![Selenium](https://img.shields.io/badge/-Selenium-43B02A?logo=selenium&logoColor=white)
+![SQLite](https://img.shields.io/badge/-SQLite-003B57?logo=sqlite&logoColor=white)
 
 ---
 

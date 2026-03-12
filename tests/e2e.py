@@ -101,10 +101,13 @@ def test_leaderboard_table_visible(browser):
 
 def test_leaderboard_score_is_number(browser):
     browser.get(f"{BASE_URL}/scores")
-    wait_for(browser, "#tbody tr")
-    score_text = browser.find_element(
-        By.CSS_SELECTOR, "#tbody tr:first-child td:nth-child(3)"
-    ).text
+    wait = WebDriverWait(browser, 10)
+    # Wait until the score cell has non-empty text
+    score_text = wait.until(
+        lambda d: d.find_element(
+            By.CSS_SELECTOR, "#tbody tr:first-child td:nth-child(3)"
+        ).text.strip() or None
+    )
     assert score_text.isdigit(), f"Score cell is not a number: '{score_text}'"
     assert 1 <= int(score_text) <= 1_000_000
 
