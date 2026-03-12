@@ -3,3 +3,6 @@ requests
 selenium
 tk
 art
+prometheus-flask-exporter
+gunicorn
+python-dotenv

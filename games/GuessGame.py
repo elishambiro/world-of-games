@@ -1,8 +1,7 @@
 from random import randint
 from time import sleep
 from art import *
-from Score import *
-
+from score import add_score, points_of_winning, record_play
 
 
 def check_result():
@@ -17,9 +16,11 @@ def compare_results(lucky_number, secret_number, difficulty, name):
     if lucky_number == secret_number:
         print("\033[1m***YOU WIN***\033[0m")
         add_score(name, points_of_winning(difficulty))
+        record_play("guess", difficulty, "win")
         sleep(1)
     else:
         print("\033[1mYOU LOSE!\033[0m")
+        record_play("guess", difficulty, "lose")
         sleep(1)
 
 

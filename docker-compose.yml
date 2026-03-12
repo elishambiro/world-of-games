@@ -1,6 +1,47 @@
-version: '3'
 services:
-    web:
-        image: elishambiro/project:v0.1
-        ports:
-            - "5000:5000"
+  web:
+    build: .
+    image: elishambiro/project:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  ttyd:
+    image: elishambiro/project:latest
+    command: ttyd -W -p 7681 -t fontSize=20 python main.py
+    ports:
+      - "7681:7681"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  grafana-storage:
